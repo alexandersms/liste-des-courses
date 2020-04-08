@@ -1,11 +1,34 @@
-import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import React, {useState} from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import Header from "./components/Header";
+import ListItem from "./components/ListItem";
+
+//import { uuid } from "uuidv4";
 
 export default function App() {
+
+  const [items, setItems] = useState([
+    {id: 1, text: "Lait"},
+    {id: 2, text: "Baguette"},
+    {id: 3, text: "Yaourt"},
+    {id: 4, text: "Riz"},
+  ]);
+
+  const deleteItem = id => {
+    setItems(prevItems => {
+      return prevItems.filter(item => item.id !== id)
+    })
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello les gens</Text>
-      <Image source={{uri: "https://randomuser.me/api/portraits/men/1.jpg"}} style={styles.img} />
+      <Header/>
+      <FlatList
+        data={items}
+        renderItem={({ item }) => <ListItem item={item} deleteItem={deleteItem}/>}
+        keyExtractor={item => item.id}
+      />
+      
     </View>
   );
 }
@@ -13,18 +36,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ff7675",
-    alignItems: "center",
-    justifyContent: "center"
+    paddingTop: 20,
   },
-  text: {
-    color: "#fafafa",
-    fontSize: 30,
-    fontWeight: "bold"
-  },
-  img: {
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-  }
 });
